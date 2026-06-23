@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ameris bank | Online Banking</title>
+  <!-- Font Awesome (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #eef2f6;
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+    }
+
+    .page-wrapper {
+      max-width: 1280px;
+      width: 100%;
+      background: white;
+      border-radius: 28px 28px 20px 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+      overflow: hidden;
+    }
+
+    /* ----- TOP NAV (Bank of America style) ----- */
+    .top-nav {
+      background: #003366;
+      color: white;
+      padding: 0.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem 1.5rem;
+      border-bottom: 3px solid #cc9900;
+      position: relative;
+    }
+
+    .top-nav::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #003366 0%, #001f4d 100%);
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .top-nav > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-area img {
+      height: 32px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .logo-area i {
+      color: #cc9900;
+      font-size: 1.8rem;
+      filter: drop-shadow(0 2px 4px rgba(204, 153, 0, 0.3));
+    }
+
+    .logo-area span {
+      font-weight: 300;
+      color: #b3cce6;
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .top-links a {
+      color: #e6eef9;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+      transition: 0.15s;
+    }
+
+    .top-links a:hover {
+      border-bottom-color: #cc9900;
+      color: white;
+    }
+
+    .top-links .enroll {
+      background: #cc9900;
+      color: #003366;
+      padding: 0.25rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      border-bottom: none;
+    }
+
+    .top-links .enroll:hover {
+      background: #d9a81a;
+      border-bottom: none;
+    }
+
+    /* ----- LOGIN PANEL ----- */
+    .login-panel {
+      background: #f0f5fa;
+      padding: 1.8rem 2rem;
+      border-bottom: 1px solid #d0dbe8;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .login-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 10% 20%, #f8fbff 0%, #e8eef6 100%);
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    .login-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-panel.hidden {
+      display: none;
+    }
+
+    .login-panel .welcome {
+      font-size: 1rem;
+      color: #002244;
+      font-weight: 500;
+    }
+
+    .login-panel .welcome i {
+      color: #cc9900;
+      margin-right: 6px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 1.2rem;
+    }
+
+    .login-form .field-group {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 40px;
+      padding: 0.1rem 0.1rem 0.1rem 1rem;
+      border: 2px solid #b8c9dd;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      transition: border 0.2s;
+    }
+
+    .login-form .field-group:focus-within {
+      border-color: #003366;
+    }
+
+    .login-form .field-group i {
+      color: #6b7f96;
+      font-size: 0.9rem;
+      margin-right: 6px;
+    }
+
+    .login-form .field-group input {
+      border: none;
+      padding: 0.55rem 0.3rem 0.55rem 0;
+      outline: none;
+      font-size: 0.9rem;
+      min-width: 130px;
+      background: transparent;
+    }
+
+    .login-form .field-group input::placeholder {
+      color: #7e92a8;
+      font-weight: 300;
+    }
+
+    .login-btn {
+      background: #003366;
+      color: white;
+      border: none;
+      padding: 0.5rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 51, 102, 0.2);
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover {
+      background: #004080;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(0, 51, 102, 0.3);
+    }
+
+    .login-btn i {
+      font-size: 0.8rem;
+    }
+
+    .login-help {
+      font-size: 0.75rem;
+      color: #003366;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dotted #b0c8df;
+    }
+
+    .login-help:hover {
+      border-bottom-color: #003366;
+    }
+
+    .login-error {
+      color: #b22234;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: #ffebee;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .login-error.show {
+      display: inline-flex;
+    }
+
+    /* ----- DASHBOARD ----- */
+    .dashboard-section {
+      display: none;
+      background: #f8fafc;
+      padding: 2rem 2rem 1.5rem 2rem;
+      border-bottom: 1px solid #dce4ed;
+      animation: fadeSlide 0.5s ease;
+      position: relative;
+    }
+
+    .dashboard-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><path d="M30 0L60 30L30 60L0 30L30 0Z" fill="%23f0f5fa" opacity="0.3"/></svg>');
+      background-size: 80px 80px;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .dashboard-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .dashboard-section.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+
+    .profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: white;
+      padding: 0.6rem 1.8rem 0.6rem 1.2rem;
+      border-radius: 60px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      border: 1px solid #dce4ed;
+    }
+
+    .profile-badge .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e6edf6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #003366;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #e6edf6 0%, #d0dbe8 100%);
+    }
+
+    .profile-badge .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #002244;
+    }
+
+    .profile-badge .email {
+      font-size: 0.8rem;
+      color: #4d6a8a;
+      margin-left: 4px;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 2px solid #003366;
+      color: #003366;
+      padding: 0.4rem 1.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: #003366;
+      color: white;
+    }
+
+    /* account summary cards */
+    .account-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin: 1.5rem 0 1rem 0;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.2rem 1.5rem;
+      border-radius: 20px;
+      border: 1px solid #e2eaf3;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+
+    .stat-card .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #e6edf6 0%, #d0dbe8 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #003366;
+      font-size: 1.4rem;
+    }
+
+    .stat-card .info {
+      flex: 1;
+    }
+
+    .stat-card .info .label {
+      font-size: 0.75rem;
+      color: #4d6a8a;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .stat-card .info .value {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #002244;
+      margin-top: 2px;
+    }
+
+    .stat-card .info .value.frozen {
+      color: #b22234;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-card .info .value.frozen .badge {
+      background: #ffebee;
+      color: #b22234;
+      font-size: 0.6rem;
+      padding: 0.1rem 0.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+    }
+
+    .stat-card .info .sub {
+      font-size: 0.8rem;
+      color: #4d6a8a;
+      margin-top: 2px;
+    }
+
+    /* blank dashboard note */
+    .blank-dash-note {
+      margin: 2rem 0 0.5rem 0;
+      padding: 1.2rem;
+      background: linear-gradient(45deg, #ecf2f9 0%, #e2ebf5 100%);
+      border-radius: 16px;
+      border: 2px dashed #b2c8de;
+      text-align: center;
+      color: #003366;
+    }
+
+    .blank-dash-note i {
+      margin-right: 10px;
+      color: #cc9900;
+    }
+
+    .blank-dash-note strong {
+      color: #002244;
+    }
+
+    /* ----- MAIN CONTENT ----- */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 2rem;
+      padding: 2rem 2rem 1.5rem 2rem;
+      background: white;
+    }
+
+    @media (max-width: 780px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .services-section h2, .quick-links h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #002244;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px solid #e6edf6;
+      padding-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .services-section h2 i, .quick-links h2 i {
+      color: #cc9900;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .service-grid li {
+      list-style: none;
+      padding: 0.6rem 0;
+      font-size: 0.95rem;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #edf2f8;
+      transition: 0.15s;
+      cursor: pointer;
+    }
+
+    .service-grid li:hover {
+      padding-left: 6px;
+      background: #f8faff;
+      border-radius: 8px;
+    }
+
+    .service-grid li i {
+      width: 24px;
+      color: #003366;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .service-grid li .service-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #e6edf6 0%, #d0dbe8 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #003366;
+      font-size: 0.9rem;
+    }
+
+    .quick-links .card {
+      background: #f6faff;
+      border-radius: 24px;
+      padding: 1.5rem 1.5rem;
+      border: 1px solid #dfe8f2;
+      background: linear-gradient(180deg, #f6faff 0%, #eef4fc 100%);
+    }
+
+    .quick-links .card .link-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #e6edf6;
+      color: #003366;
+      font-weight: 500;
+      text-decoration: none;
+      transition: 0.15s;
+      cursor: pointer;
+    }
+
+    .quick-links .card .link-item:hover {
+      padding-left: 8px;
+      color: #002244;
+    }
+
+    .quick-links .card .link-item:last-child {
+      border-bottom: none;
+    }
+
+    .quick-links .card .link-item i {
+      color: #cc9900;
+      width: 24px;
+      text-align: center;
+    }
+
+    .quick-links .card .link-item .link-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #cc9900 0%, #b8860b 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8rem;
+    }
+
+    /* Toast notification for frozen actions */
+    .toast-notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #b22234;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(178, 34, 52, 0.3);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      z-index: 9999;
+      animation: slideUp 0.3s ease;
+      border-left: 4px solid #ff6b6b;
+    }
+
+    .toast-notification.show {
+      display: flex;
+    }
+
+    .toast-notification i {
+      font-size: 1.4rem;
+      color: #ffd6d6;
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* about section */
+    .about-boa {
+      padding: 2rem 2rem 2.5rem 2rem;
+      border-top: 1px solid #dce4ed;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #f5f9ff 0%, #e8eef6 100%);
+      position: relative;
+    }
+
+    .about-boa::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="1" fill="%23003366" opacity="0.05"/></svg>');
+      background-size: 20px 20px;
+      opacity: 0.5;
+    }
+
+    .about-boa > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-boa .text {
+      flex: 2 1 280px;
+    }
+
+    .about-boa .text h2 {
+      font-size: 1.5rem;
+      color: #002244;
+      margin-bottom: 0.5rem;
+    }
+
+    .about-boa .text p {
+      color: #2d4a6b;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .about-boa .btn-outline {
+      background: transparent;
+      border: 2px solid #003366;
+      color: #003366;
+      padding: 0.6rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .about-boa .btn-outline:hover {
+      background: #003366;
+      color: white;
+    }
+
+    .about-boa .btn-outline:hover i {
+      color: white;
+    }
+
+    .about-boa .btn-outline i {
+      color: #003366;
+      transition: 0.2s;
+    }
+
+    /* footer */
+    .footer-note {
+      background: #f8fafc;
+      padding: 0.9rem 2rem;
+      font-size: 0.8rem;
+      color: #5a6f88;
+      border-top: 1px solid #dce4ed;
+      text-align: center;
+      background: linear-gradient(0deg, #f8fafc 0%, #f0f4f9 100%);
+    }
+
+    .footer-note i {
+      margin: 0 5px;
+      color: #003366;
+    }
+
+    /* responsive */
+    @media (max-width: 650px) {
+      .login-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .login-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .login-form .field-group {
+        width: 100%;
+      }
+      .login-form .field-group input {
+        width: 100%;
+        min-width: auto;
+      }
+      .top-nav {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .top-links {
+        justify-content: center;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .profile-badge {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .account-summary-grid {
+        grid-template-columns: 1fr;
+      }
+      .toast-notification {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="logo-area">
+      <i class="fas fa-university"></i> Ameris bank <span>| Online</span>
+    </div>
+    <div class="top-links">
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-user"></i> My Accounts</a>
+      <a href="#"><i class="fas fa-credit-card"></i> Credit Cards</a>
+      <a href="#" class="enroll"><i class="fas fa-user-plus"></i> Enroll</a>
+    </div>
+  </div>
+
+  <!-- LOGIN PANEL -->
+  <div class="login-panel" id="loginPanel">
+    <div class="welcome">
+      <i class="fas fa-lock"></i> Secure Login
+    </div>
+    <div class="login-form">
+      <div class="field-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="emailInput" value="davidlan@gmail.com" placeholder="Email / ID">
+      </div>
+      <div class="field-group">
+        <i class="fas fa-key"></i>
+        <input type="password" id="passwordInput" placeholder="Enter password">
+      </div>
+      <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Log In</button>
+      <a href="#" class="login-help">Forgot ID / Password?</a>
+      <div class="login-error" id="loginError">
+        <i class="fas fa-exclamation-circle"></i> Invalid password. Try again.
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-section" id="dashboardSection">
+    <div class="dashboard-header">
+      <div class="profile-badge">
+        <div class="avatar"><i class="fas fa-user-circle"></i></div>
+        <span class="name">david Lan</span>
+        <span class="email"><i class="far fa-envelope"></i> davidlan@gmail.com</span>
+      </div>
+      <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+    </div>
+
+    <div class="account-summary-grid">
+      <div class="stat-card">
+        <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="info">
+          <div class="label">Total Balance</div>
+          <div class="value frozen">$1,740,334.33 <span class="badge"><i class="fas fa-snowflake"></i> FROZEN</span></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><i class="fas fa-history"></i></div>
+        <div class="info">
+          <div class="label">Last Transfer</div>
+          <div class="value">April 2026</div>
+          <div class="sub">Pending review</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><i class="fas fa-credit-card"></i></div>
+        <div class="info">
+          <div class="label">Credit Limit</div>
+          <div class="value">$25,000</div>
+          <div class="sub">Available: $0.0</div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-grid">
+    <div class="services-section">
+      <h2><i class="fas fa-concierge-bell"></i> Banking Services</h2>
+      <ul class="service-grid">
+        <li class="action-link"><span class="service-icon"><i class="fas fa-wallet"></i></span> Checking & Savings</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-credit-card"></i></span> Credit Cards</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-home"></i></span> Mortgages</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-car"></i></span> Auto Loans</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-chart-pie"></i></span> Investments</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-hand-holding-usd"></i></span> Business Banking</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-mobile-alt"></i></span> Mobile Banking</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-shield-alt"></i></span> Fraud Protection</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-exchange-alt"></i></span> Wire Transfers</li>
+        <li class="action-link"><span class="service-icon"><i class="fas fa-user-tie"></i></span> Wealth Management</li>
+      </ul>
+    </div>
+
+    <div class="quick-links">
+      <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+      <div class="card">
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-arrow-right"></i></span> Transfer funds</div>
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-bill"></i></span> Pay bills</div>
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-download"></i></span> Statements</div>
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-lock"></i></span> Security center</div>
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-headset"></i></span> Customer service</div>
+        <div class="link-item action-link"><span class="link-icon"><i class="fas fa-phone-alt"></i></span> Contact us</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about-boa">
+    <div class="text">
+      <h2>About Ameris bank</h2>
+      <p>Ameris bank is committed to helping you manage your finances with confidence. From personal banking to wealth management, we offer a full range of financial solutions backed by industry leading security and customer support.</p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <i class="fas fa-shield-alt"></i> Ameris bank Online Banking 
+    <span style="margin: 0 12px;">|</span> <i class="fas fa-phone"></i> 1-800-123-4567
+    <span style="margin: 0 12px;">|</span> <i class="far fa-clock"></i> 24/7 support
+  </div>
+
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-notification" id="toast">
+  <i class="fas fa-snowflake"></i>
+  <span>Account frozen please try again in 24 hours</span>
+</div>
+
+<script>
+  // Login logic
+  document.getElementById('loginBtn').addEventListener('click', function() {
+    const password = document.getElementById('passwordInput').value;
+    const errorEl = document.getElementById('loginError');
+    
+    if (password === 'davidlan247@') {
+      document.getElementById('loginPanel').classList.add('hidden');
+      document.getElementById('dashboardSection').classList.add('active');
+      errorEl.classList.remove('show');
+    } else {
+      errorEl.classList.add('show');
+      errorEl.style.animation = 'none';
+      setTimeout(() => errorEl.style.animation = 'shake 0.3s ease', 10);
+    }
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+    document.getElementById('loginPanel').classList.remove('hidden');
+    document.getElementById('dashboardSection').classList.remove('active');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('loginError').classList.remove('show');
+  });
+
+  // Enter key
+  document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('loginBtn').click();
+    }
+  });
+
+  // Toast functionality for all action links
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Add click listeners to all elements with class 'action-link'
+  document.querySelectorAll('.action-link').forEach(element => {
+    element.addEventListener('click', function(e) {
+      e.preventDefault();
+      showToast();
+    });
+  });
+
+  // Also catch any other links/buttons that might not have the class
+  document.querySelectorAll('a, button, .link-item, .service-grid li').forEach(element => {
+    if (!element.classList.contains('login-btn') && 
+        !element.classList.contains('logout-btn') && 
+        !element.classList.contains('enroll') &&
+        !element.classList.contains('login-help')) {
+      element.addEventListener('click', function(e) {
+        // Only show toast if not a login/logout action
+        if (!this.closest('.login-panel') && !this.closest('.dashboard-header')) {
+          e.preventDefault();
+          showToast();
+        }
+      });
+    }
+  });
+
+  // Shake keyframes
+  const styleSheet = document.createElement("style");
+  styleSheet.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+</script>
+
+</body>
+</html>
